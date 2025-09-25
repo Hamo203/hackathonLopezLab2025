@@ -32,7 +32,7 @@ app.register_blueprint(search_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
 #app.register_blueprint(admin_bp)
-
+app.config["FIRESTORE_DB"] = db
 
 if __name__ == "__main__":
     app.run(debug=True)

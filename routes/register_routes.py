@@ -1,6 +1,6 @@
 import os
 import time
-from flask import Blueprint, request, jsonify, render_template, flash, redirect, url_for
+from flask import Blueprint, request, jsonify, render_template, flash, redirect, url_for,current_app
 
 import pyrebase
 import firebase_admin
@@ -15,7 +15,7 @@ print(config["apiKey"])
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-db = firestore.client()
+
 
 # Admin SDK (Firestore用)
 #if not firebase_admin._apps:
@@ -26,6 +26,7 @@ db = firestore.client()
 # ルート
 @register_bp.route("/", methods=['GET', 'POST'])
 def register_page():
+    db = current_app.config["FIRESTORE_DB"] 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")

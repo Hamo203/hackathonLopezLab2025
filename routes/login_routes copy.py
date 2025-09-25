@@ -1,25 +1,26 @@
 import json
 import pyrebase
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app
-# Firebase設定を読み込み
-from firebase_admin import firestore
-import os, json
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 # Flask アプリ作成
-login_bp = Blueprint("login", __name__, url_prefix="/login")
+app = Flask(__name__, template_folder="../templates")
+app.secret_key = "super_secret_key"  # セッション用（適当に変更可）
 
-with open("firebase_config.json", "r", encoding="utf-8") as f:
-    config = json.load(f) 
+# Firebase設定を読み込み
+import os, json
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # login_routes.py のあるディレクトリ
+config_path = os.path.join(BASE_DIR, "firebase_config.json")
 
-firebase = pyrebase.initialize_app(config)
+with open(config_path, "r") as f:
+    firebase_config = json.load(f)
+
+firebase = pyrebase.initialize_app(firebase_config)
 auth = firebase.auth()
 
-
-@login_bp.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login_page():
-     db = current_app.config["FIRESTORE_DB"]
-     if request.method == "POST":
+    if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
 
@@ -33,10 +34,10 @@ def login_page():
             flash("IDかパスワードが異なっています。", "danger")
             return redirect(url_for("login_page"))
 
-     return render_template("login.html")
+    return render_template("login.html")
 
 
-@login_bp.route("/index")
+@app.route("/index")
 def index():
     if "user" not in session:
         flash("ログインしてください", "warning")
@@ -44,9 +45,12 @@ def index():
     return render_template("index.html")
 
 
-@login_bp.route("/logout")
+@app.route("/logout")
 def logout():
     session.pop("user", None)
     flash("ログアウトしました", "info")
     return redirect(url_for("login_page"))
 
+
+if __name__ == "__main__":
+    app.run(debug=True)
