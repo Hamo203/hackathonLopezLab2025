@@ -1,10 +1,13 @@
-# app.py
-from flask import Flask, request, jsonify
+import os
+from flask import Flask, request, jsonify, render_template
 import firebase_admin
 from firebase_admin import credentials, firestore
 import time
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # hackathonLopezLab2025/
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+
+app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
 # Firebase Admin SDK 初期化
 cred = credentials.Certificate("serviceAccountKey.json")  # FirebaseからDLしたキー
@@ -14,29 +17,28 @@ db = firestore.client()
 # ルート
 @app.route("/")
 def index():
-    return "Flask server for Lab Assets running."
+     return render_template("matsuda.html") 
 
 # 備品追加
 @app.route("/add_asset", methods=["POST"])
 def add_asset():
     data = request.json
     required = ["name", "place", "use"]
-
-    # 必須チェック
     for key in required:
         if not data.get(key):
-            return jsonify({"status": "error", "message": f"{key} is required"}), 400
-
+            return jsonify({"status":"error","message":f"{key} is required"}), 400
     doc = {
         "name": data["name"],
         "place": data["place"],
         "use": data["use"],
         "article": data.get("article") or None,
         "articleUrl": data.get("articleUrl") or None,
-        "updatedAt": int(time.time() * 1000)
+        "updatedAt": int(time.time()*1000)
     }
-    db.collection("assets").add(doc)
-    return jsonify({"status": "success", "message": "Asset added"})
+    # 🔽 保存先を devices に変更
+    db.collection("devices").add(doc)
+    return jsonify({"status":"success","message":"Asset added to devices"})
+
 
 # 備品削除（名前検索して最初の1件を削除）
 @app.route("/delete_asset", methods=["POST"])
