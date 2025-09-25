@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>備品管理</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+    fieldset { margin: 20px 0; padding: 20px; }
+    label { display:block; margin-top:10px; }
+    input, textarea { width:100%; padding:8px; margin-top:4px; }
+    button { margin-top:10px; padding:8px 16px; }
+    .msg { margin-top:10px; padding:10px; border-radius:6px; }
+    .success { background:#e0ffe0; border:1px solid #00a000; }
+    .error { background:#ffe0e0; border:1px solid #a00000; }
+  </style>
+</head>
+<body>
+<h1>研究室 備品管理</h1>
+
+<!-- 追加フォーム -->
+<fieldset>
+  <legend>追加</legend>
+  <label>デバイス名 *</label>
+  <input id="name">
+  <label>場所 *</label>
+  <input id="place">
+  <label>使い方 *</label>
+  <textarea id="use"></textarea>
+  <label>論文タイトル</label>
+  <input id="article">
+  <label>論文URL</label>
+  <input id="articleUrl" type="url">
+
+  <button onclick="addAsset()">追加</button>
+  <div id="addMsg"></div>
+</fieldset>
+
+<!-- 削除フォーム -->
+<fieldset>
+  <legend>削除</legend>
+  <label>デバイス名 *</label>
+  <input id="delName">
+  <button onclick="deleteAsset()">削除</button>
+  <div id="delMsg"></div>
+</fieldset>
+
+<script>
+const API_BASE = "http://127.0.0.1:5000"; // FlaskサーバーURL
+
+async function addAsset() {
+  const data = {
+    name: document.getElementById("name").value,
+    place: document.getElementById("place").value,
+    use: document.getElementById("use").value,
+    article: document.getElementById("article").value,
+    articleUrl: document.getElementById("articleUrl").value
+  };
+  const res = await fetch(`${API_BASE}/add_asset`, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  const msgBox = document.getElementById("addMsg");
+  msgBox.innerHTML = result.message;
+  msgBox.className = "msg " + (result.status === "success" ? "success":"error");
+}
+
+async function deleteAsset() {
+  const data = { name: document.getElementById("delName").value };
+  const res = await fetch(`${API_BASE}/delete_asset`, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  const msgBox = document.getElementById("delMsg");
+  msgBox.innerHTML = result.message;
+  msgBox.className = "msg " + (result.status === "success" ? "success":"error");
+}
+</script>
+</body>
+</html>
