@@ -3,6 +3,8 @@ from routes.main_routes import main_bp
 from routes.search_routes import search_bp
 from routes.login_routes import login_bp
 from routes.register_routes import register_bp
+from routes.main_matsuda import matsuda_bp
+from routes.main_masaaki import masaaki_bp
 from firebase_admin import credentials, firestore
 import firebase_admin
 #from routes.admin_routes import admin_bp
@@ -31,6 +33,8 @@ app.register_blueprint(main_bp)
 app.register_blueprint(search_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
+app.register_blueprint(matsuda_bp)
+app.register_blueprint(masaaki_bp)
 #app.register_blueprint(admin_bp)
 app.config["FIRESTORE_DB"] = db
 
