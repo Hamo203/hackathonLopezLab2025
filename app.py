@@ -24,7 +24,6 @@ if not firebase_admin._apps:   # すでに初期化されている場合はス�
 db = firestore.client()  # グローバル変数として保持
 #ここまで比留間追加
 
-
 app = Flask(__name__)
 app.register_blueprint(main_bp)
 app.register_blueprint(search_bp)
