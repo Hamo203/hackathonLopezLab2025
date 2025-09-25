@@ -2,59 +2,75 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <title>備品管理</title>
-  <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
-    fieldset { margin: 20px 0; padding: 20px; }
-    label { display:block; margin-top:10px; }
-    input, textarea { width:100%; padding:8px; margin-top:4px; }
-    button { margin-top:10px; padding:8px 16px; }
-    .msg { margin-top:10px; padding:10px; border-radius:6px; }
-    .success { background:#e0ffe0; border:1px solid #00a000; }
-    .error { background:#ffe0e0; border:1px solid #a00000; }
-  </style>
+  <title>研究室 備品管理</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style_resist.css') }}">
 </head>
 <body>
-<h1>研究室 備品管理</h1>
+  <header class="navbar">
+    <h1>研究室 備品管理システム</h1>
+  </header>
 
-<!-- 追加フォーム -->
-<fieldset>
-  <legend>追加</legend>
-  <label>デバイス名 *</label>
-  <input id="name">
-  <label>場所 *</label>
-  <input id="place">
-  <label>使い方 *</label>
-  <textarea id="use"></textarea>
-  <label>論文タイトル</label>
-  <input id="article">
-  <label>論文URL</label>
-  <input id="articleUrl" type="url">
+  <main class="container">
+    <!-- 追加フォーム -->
+    <div class="card">
+      <h2>備品を追加</h2>
+      <form onsubmit="event.preventDefault(); addAsset();">
+        <label>デバイス名 *</label>
+        <input id="name" required>
 
-  <button onclick="addAsset()">追加</button>
-  <div id="addMsg"></div>
-</fieldset>
+        <label>場所 *</label>
+        <input id="place" required>
 
-<!-- 削除フォーム -->
-<fieldset>
-  <legend>削除</legend>
-  <label>デバイス名 *</label>
-  <input id="delName">
-  <button onclick="deleteAsset()">削除</button>
-  <div id="delMsg"></div>
-</fieldset>
+        <label>使い方 *</label>
+        <textarea id="use" required></textarea>
+
+        <label>論文タイトル</label>
+        <input id="article">
+
+        <label>論文URL</label>
+        <input id="articleUrl" type="url">
+
+        <label>ジャンル *</label>
+        <div class="genre-options">
+          <label><input type="checkbox" name="genre" value="digital well-being"><span>Digital Well-being</span></label>
+          <label><input type="checkbox" name="genre" value="XR"><span>XR</span></label>
+          <label><input type="checkbox" name="genre" value="daily well-being"><span>Daily Well-being</span></label>
+          <label><input type="checkbox" name="genre" value="physical activity"><span>Physical Activity</span></label>
+        </div>
+
+        <button type="submit" class="btn-primary">追加</button>
+      </form>
+      <div id="addMsg"></div>
+    </div>
+
+    <!-- 削除フォーム -->
+    <div class="card">
+      <h2>備品を削除</h2>
+      <form onsubmit="event.preventDefault(); deleteAsset();">
+        <label>デバイス名 *</label>
+        <input id="delName" required>
+        <button type="submit" class="btn-danger">削除</button>
+      </form>
+      <div id="delMsg"></div>
+    </div>
+  </main>
 
 <script>
-const API_BASE = "http://127.0.0.1:5000"; // FlaskサーバーURL
+const API_BASE = "http://127.0.0.1:5000";
 
 async function addAsset() {
+  const selectedGenres = Array.from(document.querySelectorAll("input[name='genre']:checked"))
+                              .map(el => el.value);
+
   const data = {
     name: document.getElementById("name").value,
     place: document.getElementById("place").value,
     use: document.getElementById("use").value,
     article: document.getElementById("article").value,
-    articleUrl: document.getElementById("articleUrl").value
+    articleUrl: document.getElementById("articleUrl").value,
+    genres: selectedGenres
   };
+
   const res = await fetch(`${API_BASE}/add_asset`, {
     method: "POST",
     headers: {"Content-Type":"application/json"},
@@ -77,7 +93,6 @@ async function deleteAsset() {
   const msgBox = document.getElementById("delMsg");
   msgBox.innerHTML = result.message;
   msgBox.className = "msg " + (result.status === "success" ? "success":"error");
-  
 }
 </script>
 </body>

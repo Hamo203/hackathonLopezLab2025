@@ -33,12 +33,11 @@ def add_asset():
         "use": data["use"],
         "article": data.get("article") or None,
         "articleUrl": data.get("articleUrl") or None,
+        "genres": data.get("genres") or [],  # 🔽 ジャンル追加
         "updatedAt": int(time.time()*1000)
     }
-    # 🔽 保存先を devices に変更
     db.collection("devices").add(doc)
     return jsonify({"status":"success","message":"Asset added to devices"})
-
 
 # 備品削除（名前検索して最初の1件を削除）
 @app.route("/delete_asset", methods=["POST"])
@@ -48,16 +47,15 @@ def delete_asset():
     if not name:
         return jsonify({"status": "error", "message": "name is required"}), 400
 
-    query = db.collection("assets").where("name", "==", name).stream()
+    query = db.collection("devices").where("name", "==", name).stream()
     deleted = 0
     for doc in query:
-        db.collection("assets").document(doc.id).delete()
+        db.collection("devices").document(doc.id).delete()
         deleted += 1
         break  # 最初の1件のみ削除
     if deleted == 0:
         return jsonify({"status": "error", "message": "No asset found"}), 404
     return jsonify({"status": "success", "message": f"{name} deleted"})
-
 
 if __name__ == "__main__":
     app.run(debug=True)

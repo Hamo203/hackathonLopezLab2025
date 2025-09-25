@@ -1,0 +1,126 @@
+/* 全体 */
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6f7;
+  margin: 0;
+  padding: 0;
+}
+
+/* ヘッダー */
+.navbar {
+  background: #232f3e;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+/* メインコンテンツ */
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+/* カード */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* 入力フォーム */
+label {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: bold;
+  color: #333;
+}
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ボタン */
+button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background: #ffa41c;  /* Amazon風オレンジ */
+  color: #111;
+}
+.btn-primary:hover {
+  background: #f08804;
+}
+
+.btn-danger {
+  background: #d9534f;
+  color: white;
+}
+.btn-danger:hover {
+  background: #c9302c;
+}
+
+/* ジャンルチェックボックス */
+.genre-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.genre-options label {
+  background: #eee;
+  border-radius: 20px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+.genre-options input {
+  display: none;
+}
+.genre-options input:checked + span {
+  background: #ffa41c;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 8px 15px;
+}
+
+/* メッセージ */
+.msg {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+}
+.success {
+  background: #e6ffed;
+  border: 1px solid #2ecc71;
+  color: #2d7a46;
+}
+.error {
+  background: #ffeaea;
+  border: 1px solid #e74c3c;
+  color: #a82323;
+}
