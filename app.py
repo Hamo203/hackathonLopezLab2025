@@ -19,7 +19,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 cred_path = os.path.join(BASE_DIR, "serviceAccountKey.json")  # JSON ファイルのパス
 cred = credentials.Certificate(cred_path)
-firebase_admin.initialize_app(cred)
+if not firebase_admin._apps:   # すでに初期化されている場合はスキップ
+    firebase_admin.initialize_app(cred)
 db = firestore.client()  # グローバル変数として保持
 #ここまで比留間追加
 
