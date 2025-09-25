@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>研究支援チャット</title>
+</head>
+<body>
+  <h1>研究支援チャット (検索ページ)</h1>
+
+  <textarea id="userInput" rows="4" cols="50" placeholder="質問を入力してください"></textarea><br>
+  <button onclick="sendMessage()">送信</button>
+
+  <h2>回答:</h2>
+  <div id="response"></div>
+
+  <script>
+    async function sendMessage() {
+      const userMessage = document.getElementById("userInput").value;
+
+      // ★ デバッグ用コメント出力
+      console.log("送信ボタンが押されました");
+      console.log("入力内容:", userMessage);
+
+      const res = await fetch("/search/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage })
+      });
+
+      const data = await res.json();
+      document.getElementById("response").innerText = data.reply;
+    }
+  </script>
+</body>
+</html>
