@@ -9,19 +9,18 @@ import json
 
 register_bp = Blueprint("register", __name__, url_prefix="/register")
 
-# --- Firebase初期化 ---
-# Web SDK設定（Pyrebase用）
-
 with open("firebase_config.json", "r", encoding="utf-8") as f:
-    config = json.load(f)
+    config = json.load(f) 
+print(config["apiKey"]) 
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
+db = firestore.client()
 
 # Admin SDK (Firestore用)
-if not firebase_admin._apps:
-    cred = credentials.Certificate("serviceAccountKey.json")
-    firebase_admin.initialize_app(cred)
+#if not firebase_admin._apps:
+#    cred = credentials.Certificate("serviceAccountKey.json")
+#    firebase_admin.initialize_app(cred)
 #db = firestore.client()
 
 # ルート
@@ -52,7 +51,10 @@ def register_page():
             return redirect(url_for("register.register_page"))
 
         except Exception as e:
-            flash(f"登録に失敗しました: {str(e)}")
+            if "EMAIL_EXISTS" in str(e):
+                flash("このメールアドレスはすでに登録されています。ログインしてください。")
+            else:
+                flash(f"登録に失敗しました: {str(e)}")
             return render_template("register.html")
 
     return render_template("register.html")
