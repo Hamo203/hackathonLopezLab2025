@@ -10,9 +10,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
 # Firebase Admin SDK 初期化
-cred = credentials.Certificate("serviceAccountKey.json")  # FirebaseからDLしたキー
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+#cred = credentials.Certificate("serviceAccountKey.json")  # FirebaseからDLしたキー
+#firebase_admin.initialize_app(cred)
+#db = firestore.client()
 
 
 # HTMLを返すルート
