@@ -7,6 +7,21 @@ from firebase_admin import credentials, firestore
 import firebase_admin
 #from routes.admin_routes import admin_bp
 
+#比留間追加
+import os
+from dotenv import load_dotenv
+
+#.envを読み込む
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# Firebase初期化
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+cred_path = os.path.join(BASE_DIR, "serviceAccountKey.json")  # JSON ファイルのパス
+cred = credentials.Certificate(cred_path)
+firebase_admin.initialize_app(cred)
+db = firestore.client()  # グローバル変数として保持
+#ここまで比留間追加
 
 
 app = Flask(__name__)
