@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template,current_app
 import firebase_admin
 from firebase_admin import credentials, firestore
 import time
@@ -7,7 +7,8 @@ import time
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # hackathonLopezLab2025/
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
-app = Flask(__name__, template_folder=TEMPLATES_DIR)
+
+matsuda_bp = Blueprint("matsuda", __name__, url_prefix="/matsuda")
 
 # Firebase Admin SDK 初期化
 #cred = credentials.Certificate("serviceAccountKey.json")  # FirebaseからDLしたキー
@@ -15,12 +16,13 @@ app = Flask(__name__, template_folder=TEMPLATES_DIR)
 #db = firestore.client()
 
 # ルート
-@app.route("/")
-def index():
-     return render_template("matsuda.html") 
+@matsuda_bp.route("/")
+def add_page():
+    db = current_app.config["FIRESTORE_DB"] 
+    return render_template("matsuda.html") 
 
 # 備品追加
-@app.route("/add_asset", methods=["POST"])
+@matsuda_bp.route("/add_asset", methods=["POST"])
 def add_asset():
     data = request.json
     required = ["name", "place", "use"]
@@ -40,7 +42,7 @@ def add_asset():
     return jsonify({"status":"success","message":"Asset added to devices"})
 
 # 備品削除（名前検索して最初の1件を削除）
-@app.route("/delete_asset", methods=["POST"])
+@matsuda_bp.route("/delete_asset", methods=["POST"])
 def delete_asset():
     data = request.json
     name = data.get("name")
@@ -57,5 +59,4 @@ def delete_asset():
         return jsonify({"status": "error", "message": "No asset found"}), 404
     return jsonify({"status": "success", "message": f"{name} deleted"})
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
