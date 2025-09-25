@@ -56,5 +56,6 @@ def delete_asset():
         return jsonify({"status": "error", "message": "No asset found"}), 404
     return jsonify({"status": "success", "message": f"{name} deleted"})
 
+
 if __name__ == "__main__":
     app.run(debug=True)
