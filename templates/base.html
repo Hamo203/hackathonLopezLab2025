@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>研究室備品管理</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <h1><a href="{{ url_for('main.index') }}">研究室備品管理システム</a></h1>
+    <nav>
+      <a href="{{ url_for('main.index') }}">一覧</a> |
+      <a href="{{ url_for('search.search_page') }}">検索</a> |
+      <a href="{{ url_for('admin.admin') }}">管理</a>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Items</p>
+  </footer>
+</body>
+</html>
