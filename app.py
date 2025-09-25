@@ -25,6 +25,8 @@ db = firestore.client()  # グローバル変数として保持
 #ここまで比留間追加
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))  # ここで設定
+
 app.register_blueprint(main_bp)
 app.register_blueprint(search_bp)
 app.register_blueprint(login_bp)
