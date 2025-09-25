@@ -1,13 +1,10 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template,current_app
 import firebase_admin
 from firebase_admin import credentials, firestore
 from collections import defaultdict
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # hackathonLopezLab2025/
-TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
-
-app = Flask(__name__, template_folder=TEMPLATES_DIR)
+masaaki_bp = Blueprint("masaaki", __name__, url_prefix="/masaaki")
 
 # Firebase Admin SDK 初期化
 #cred = credentials.Certificate("serviceAccountKey.json")  # FirebaseからDLしたキー
@@ -16,12 +13,14 @@ app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
 
 # HTMLを返すルート
-@app.route('/')
-def index():
+@masaaki_bp.route('/')
+def masaaki_page():
+    db = current_app.config["FIRESTORE_DB"]
     return render_template('masaaki.html')
 
-@app.route('/api/devices')
+@masaaki_bp.route('/api/devices')
 def get_devices_by_genre():
+    db = current_app.config["FIRESTORE_DB"]
     docs = db.collection('devices').stream()
 
     # ジャンルごとにデータをまとめる
@@ -37,5 +36,4 @@ def get_devices_by_genre():
 
     return jsonify(genre_dict)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
