@@ -23,8 +23,27 @@
           <label>デバイス名 *</label>
           <input id="name" required>
 
+          <!-- 以下比留間編集 「場所」をプルダウンメニューに変更-->
           <label>場所 *</label>
-          <input id="place" required>
+          <select id="place" required>
+            <option value="" disabled selected>場所を選択してください</option>
+            <option value="棚・左・１段目">棚・左・１段目</option>
+            <option value="棚・左・２段目">棚・左・２段目</option>
+            <option value="棚・左・３段目">棚・左・３段目</option>
+            <option value="棚・真ん中・１段目">棚・真ん中・１段目</option>
+            <option value="棚・真ん中・２段目">棚・真ん中・２段目</option>
+            <option value="棚・真ん中・３段目">棚・真ん中・３段目</option>
+            <option value="棚・真ん中・４段目">棚・真ん中・４段目</option>
+            <option value="棚・真ん中・５段目">棚・真ん中・５段目</option>
+            <option value="棚・真ん中・６段目">棚・真ん中・６段目</option>
+            <option value="棚・右・１段目">棚・右・１段目</option>
+            <option value="棚・右・２段目">棚・右・２段目</option>
+            <option value="棚・右・３段目">棚・右・３段目</option>
+            <option value="棚・右・４段目">棚・右・４段目</option>
+            <option value="LopezLab下・机">LopezLab下・机</option>
+            <option value="その他">その他</option>
+          </select>
+          <!-- ここまで比留間編集 -->
 
           <label>使い方 *</label>
           <textarea id="use" required></textarea>
@@ -97,7 +116,9 @@ async function addAsset() {
     document.getElementById("use").value = "";
     document.getElementById("article").value = "";
     document.getElementById("articleUrl").value = "";
-    document.getElementById("input[name='genre']").forEach(checkbox => {
+
+
+    document.querySelectorAll("input[name='genre']").forEach(checkbox => {
       checkbox.checked = false;
     });
   }
