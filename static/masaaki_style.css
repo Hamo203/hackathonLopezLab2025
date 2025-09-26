@@ -1,0 +1,115 @@
+/* 全体 */
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6f7;
+  margin: 0;
+  padding: 0;
+}
+
+/* ヘッダー */
+.navbar {
+  background: #232f3e;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+.navbar h1 {
+  margin: 0;
+  font-size: 1.4em;
+}
+
+/* メインコンテンツ */
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+/* カード */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.card {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.01);
+}
+.card .info {
+  flex: 1;
+}
+.card .info h2 {
+  margin: 0 0 8px;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #111;
+}
+.card .place {
+  font-size: 1em;
+  font-weight: 600;
+  color: #007185;
+  margin-bottom: 8px;
+}
+.card .use {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 8px;
+}
+.card .article {
+  font-size: 0.95em;
+  font-style: italic;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.card .link {
+  margin-left: 20px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.card .link a {
+  text-decoration: none;
+  color: #007185;
+  font-weight: 600;
+}
+.card .link a:hover {
+  color: #c7511f;
+}
+
+/* ジャンルフィルター */
+.genre-filters {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.genre-filters label {
+  background: #eee;
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.genre-filters input {
+  display: none;
+}
+.genre-filters input:checked + span {
+  background: #ffa41c;
+  color: #111;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 6px 14px;
+}
