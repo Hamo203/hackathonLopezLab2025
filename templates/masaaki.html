@@ -4,6 +4,41 @@
 <meta charset="utf-8">
 <title>備品一覧</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='masaaki_style.css') }}">
+<style>
+  /* ▼▼▼【追加】お気に入りボタンのスタイル ▼▼▼ */
+  .favorite-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 20px; /* 角を丸く */
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-right: 16px;
+    font-size: 0.9em;
+    transition: all 0.2s ease; /* アニメーション効果 */
+  }
+  .favorite-btn:hover {
+    background-color: #f5f5f5;
+  }
+  /* お気に入り登録済み状態 */
+  .favorite-btn.favorited {
+    background-color: #fff0f5; /* 背景を薄いピンクに */
+    border-color: #ff69b4; /* 枠線をピンクに */
+    color: #ff69b4; /* 文字をピンクに */
+    font-weight: bold;
+  }
+  /* ▲▲▲【追加】お気に入りボタンのスタイル ▲▲▲ */
+
+  /* カード内の要素を中央揃えにするためのスタイル */
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .link {
+    display: flex;
+    align-items: center;
+  }
+</style>
 </head>
 <body>
   <div class="navbar">
@@ -25,6 +60,25 @@
 
 <script>
 let allData = {};
+
+// ▼▼▼【追加】お気に入り管理関数 ▼▼▼
+/**
+ * localStorageからお気に入りIDの配列を取得する
+ * @returns {string[]} お気に入りIDの配列
+ */
+function getFavorites() {
+  const favorites = localStorage.getItem('deviceFavorites');
+  return favorites ? JSON.parse(favorites) : [];
+}
+
+/**
+ * お気に入りIDの配列をlocalStorageに保存する
+ * @param {string[]} favoritesArray お気に入りIDの配列
+ */
+function saveFavorites(favoritesArray) {
+  localStorage.setItem('deviceFavorites', JSON.stringify(favoritesArray));
+}
+// ▲▲▲【追加】お気に入り管理関数 ▲▲▲
 
 async function loadDevices() {
   const res = await fetch('/masaaki/api/devices');
@@ -48,26 +102,34 @@ function displayDevices() {
   const checkboxes = Array.from(document.querySelectorAll('#genreFilters input[type="checkbox"]:checked'));
   const selectedGenres = checkboxes.map(cb => cb.value);
 
+  let devicesToDisplay = [];
   if (selectedGenres.includes('all') || selectedGenres.length === 0) {
-    Object.values(allData).flat().forEach(d => {
-      container.appendChild(createCard(d));
-    });
+    devicesToDisplay = Object.values(allData).flat();
   } else {
     const shownIds = new Set();
     selectedGenres.forEach(genre => {
       (allData[genre] || []).forEach(d => {
         if (!shownIds.has(d.id)) {
-          container.appendChild(createCard(d));
+          devicesToDisplay.push(d);
           shownIds.add(d.id);
         }
       });
     });
   }
+
+  devicesToDisplay.forEach(d => {
+    container.appendChild(createCard(d));
+  });
 }
 
 function createCard(d) {
   const div = document.createElement('div');
   div.className = 'card';
+
+  // ▼▼▼【修正】お気に入り状態を確認し、ボタンを追加 ▼▼▼
+  const favorites = getFavorites();
+  const isFavorited = favorites.includes(String(d.id)); // IDを文字列として比較
+
   div.innerHTML = `
     <div class="info">
       <h2>${d.name || ''}</h2>
@@ -76,10 +138,17 @@ function createCard(d) {
       <div class="article">使用された論文：${d.article || ''}</div>
     </div>
     <div class="link">
+      <button 
+        class="favorite-btn ${isFavorited ? 'favorited' : ''}" 
+        data-id="${d.id}"
+      >
+        ${isFavorited ? '♥ お気に入り解除' : '♡ お気に入り登録'}
+      </button>
       ${d.articleUrl ? `<a href="${d.articleUrl}" target="_blank">記事リンク</a>` : ''}
       <div style="font-size:0.75em;color:#aaa;margin-left:10px;">ID: ${d.id}</div>
     </div>
   `;
+  // ▲▲▲【修正】ここまで ▲▲▲
   return div;
 }
 
@@ -95,6 +164,35 @@ document.getElementById('genreFilters').addEventListener('change', () => {
 
   displayDevices();
 });
+
+
+// ▼▼▼【追加】お気に入りボタンのクリック処理 ▼▼▼
+// カードの親コンテナにイベントリスナーを設定（イベント委任）
+document.getElementById('cardsContainer').addEventListener('click', function(event) {
+  // クリックされた要素がfavorite-btnクラスを持っているか確認
+  const targetButton = event.target.closest('.favorite-btn');
+  if (targetButton) {
+    const deviceId = String(targetButton.dataset.id); // IDを文字列として取得
+    let favorites = getFavorites();
+
+    if (favorites.includes(deviceId)) {
+      // すでにお気に入りの場合：リストから削除
+      favorites = favorites.filter(id => id !== deviceId);
+      targetButton.classList.remove('favorited');
+      targetButton.innerHTML = '♡ お気に入り登録';
+    } else {
+      // お気に入りにない場合：リストに追加
+      favorites.push(deviceId);
+      targetButton.classList.add('favorited');
+      targetButton.innerHTML = '♥ お気に入り解除';
+    }
+    
+    // 変更をlocalStorageに保存
+    saveFavorites(favorites);
+  }
+});
+// ▲▲▲【追加】お気に入りボタンのクリック処理 ▲▲▲
+
 
 loadDevices();
 </script>
