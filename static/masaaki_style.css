@@ -6,6 +6,12 @@ body {
   padding: 0;
 }
 
+.layout {
+  display: flex;     /* 横並びにする */
+  min-height: 100vh; /* 画面の高さに合わせる */
+
+}
+
 /* ヘッダー */
 .navbar {
   background: #232f3e;
@@ -20,9 +26,10 @@ body {
 
 /* メインコンテンツ */
 .container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 10px;
+  flex: 1;
+  max-width: none;   /* 元の max-width を解除して横幅制限を外す */
+  margin-left: 120px;        /* 中央寄せを解除 */
+  padding: 20px;
 }
 
 /* カード */
@@ -112,4 +119,48 @@ body {
   font-weight: bold;
   border-radius: 20px;
   padding: 6px 14px;
+}
+
+/* サイドバー */
+.sidebar {
+  width: 140px;/*横幅 */
+  height: 100vh;
+  background-color: #eee; /* 背景色 */
+  color: #232f3e;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 2rem ;
+}
+
+.sidebar-nav ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav ul li a {
+  color: #232f3e;
+  text-decoration: none;
+  font-size: 1rem;
+  display: block;
+  padding: 0.5rem 0;
+  transition: background 0.3s;
+}
+
+.sidebar-nav ul li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding-left: 0.5rem;
+}
+
+
+.copy {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
 }
