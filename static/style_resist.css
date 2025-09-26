@@ -134,7 +134,7 @@ button {
 
 /* サイドバー */
 .sidebar {
-  width: 140px;/*横幅 */
+  width: 170px;/*横幅 */
   height: 100vh;
   background-color: #eee; /* 背景色 */
   color: #232f3e;
