@@ -7,10 +7,21 @@
   /* 全体 */
   body { 
     font-family: Arial, sans-serif; 
-    margin: 20px; 
     background: #f5f6f7; 
     color: #111;
+    margin: 0;
+    padding: 0;
   }
+  .navbar {
+    background: #232f3e;
+    color: white;
+    padding: 15px;
+    text-align: center;
+  }
+  .navbar h1 {
+    color: white;   /* 強制的に文字白 */
+  }
+
   .layout {
     display: flex;     /* 横並びにする */
     min-height: 100vh; /* 画面の高さに合わせる */
@@ -132,57 +143,55 @@
   .card .link a:hover { 
     color: #c7511f; /* Amazon赤系 */
   }
-  
-/* サイドバー */
-.sidebar {
-  position: fixed;   /* ← 画面に固定 */
-  top: 0;            /* 上端 */
-  left: 0;
-  width: 140px;/*横幅 */
-  height: 100vh;
-  background-color: #eee; /* 背景色 */
-  color: #232f3e;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+    
+  /* サイドバー */
+  .sidebar {
+    width: 140px;/*横幅 */
+    height: 100vh;
+    background-color: #eee; /* 背景色 */
+    color: #232f3e;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 2rem ;
+  }
+
+  .sidebar-nav ul li {
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-nav ul li a {
+    color: #232f3e;
+    text-decoration: none;
+    font-size: 1rem;
+    display: block;
+    padding: 0.5rem 0;
+    transition: background 0.3s;
+  }
+
+  .sidebar-nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding-left: 0.5rem;
+  }
 
 
-
-.sidebar-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 2rem ;
-}
-
-.sidebar-nav ul li {
-  margin-bottom: 1rem;
-}
-
-.sidebar-nav ul li a {
-  color: #232f3e;
-  text-decoration: none;
-  font-size: 1rem;
-  display: block;
-  padding: 0.5rem 0;
-  transition: background 0.3s;
-}
-
-.sidebar-nav ul li a:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  padding-left: 0.5rem;
-}
-
-
-.copy {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.7);
-}
+  .copy {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
 
 </style>
 </head>
 <body>
+  <header class="navbar">
+    <h1>研究室 備品管理システム</h1>
+  </header>
   <div class="layout">
     <aside class="sidebar">
       {% include "sidebar.html" %}
