@@ -5,6 +5,18 @@
   <title>研究室 備品管理</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style_resist.css') }}">
 </head>
+<style>
+  /* ▼▼▼【追加】サイドバーのロゴのスタイル ▼▼▼ */
+  .sidebar-logo {
+    display: block;      /* 中央揃えのためにblock要素にする */
+    width: 80%;          /* サイドバーの幅に対して80%のサイズ */
+    max-width: 150px;    /* 大きくなりすぎないように最大幅を指定 */
+    margin: 20px auto;   /* 上下に20px、左右に自動でマージンをとり中央揃え */
+    padding-bottom: 20px; /* ロゴの下に余白を追加 */
+    border-bottom: 1px solid #eee; /* 区切り線 */
+  }
+  /* ▲▲▲【追加】サイドバーのロゴのスタイル ▲▲▲ */
+</style>
 <body>
   
   <header class="navbar">
@@ -12,6 +24,7 @@
   </header>
   <div class="layout">  
     <aside class="sidebar">
+      <img src="{{ url_for('static', filename='Lopezn.png') }}" alt="Lopezon Logo" class="sidebar-logo">
       {% include "sidebar.html" %}
     </aside>
 
