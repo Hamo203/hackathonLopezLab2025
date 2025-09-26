@@ -49,7 +49,7 @@ def register_page():
             })
 
             flash("アカウントを作成しました！")
-            return redirect(url_for("register.register_page"))
+            return redirect(url_for("search.search_page"))
 
         except Exception as e:
             if "EMAIL_EXISTS" in str(e):
