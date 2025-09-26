@@ -80,6 +80,20 @@ async function addAsset() {
   const msgBox = document.getElementById("addMsg");
   msgBox.innerHTML = result.message;
   msgBox.className = "msg " + (result.status === "success" ? "success":"error");
+
+
+  //以下比留間追記（デバイス新規登録した際に、入力フォームがリセットされる＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+  if(result.status === "success"){
+    document.getElementById("name").value = "";
+    document.getElementById("place").value = "";
+    document.getElementById("use").value = "";
+    document.getElementById("article").value = "";
+    document.getElementById("articleUrl").value = "";
+    document.getElementById("input[name='genre']").forEach(checkbox => {
+      checkbox.checked = false;
+    });
+  }
+  //ここまで比留間追記＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 }
 
 async function deleteAsset() {
