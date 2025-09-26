@@ -17,9 +17,14 @@
       padding: 15px;
       text-align: center;
     }
+    
     .navbar h1 {
       margin: 0;
       font-size: 1.4em;
+    }
+    .layout {
+      display: flex;     /* 横並びにする */
+      min-height: 100vh; /* 画面の高さに合わせる */
     }
 
     .container {
@@ -113,14 +118,72 @@
       font-size: 13px;
       color: #555;
     }
+     
+  /* サイドバー */
+  .sidebar {
+    width: 170px;/*横幅  比留間編集*/
+    height: 100vh;
+    background-color: #eee; /* 背景色 */
+    color: #232f3e;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 2rem ;
+  }
+
+  .sidebar-nav ul li {
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-nav ul li a {
+    color: #232f3e;
+    text-decoration: none;
+    font-size: 1rem;
+    display: block;
+    padding: 0.5rem 0;
+    transition: background 0.3s;
+  }
+
+  .sidebar-nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding-left: 0.5rem;
+  }
+
+
+  .copy {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ▼▼▼【追加】サイドバーのロゴのスタイル ▼▼▼ */
+  .sidebar-logo {
+    display: block;      /* 中央揃えのためにblock要素にする */
+    width: 80%;          /* サイドバーの幅に対して80%のサイズ */
+    max-width: 150px;    /* 大きくなりすぎないように最大幅を指定 */
+    margin: 20px auto;   /* 上下に20px、左右に自動でマージンをとり中央揃え */
+    padding-bottom: 20px; /* ロゴの下に余白を追加 */
+    border-bottom: 1px solid #eee; /* 区切り線 */
+  }
+  /* ▲▲▲【追加】サイドバーのロゴのスタイル ▲▲▲ */
+
   </style>
 </head>
 <body>
   <div class="navbar">
     <h1>マイページ</h1>
   </div>
-
-  <div class="container">
+  <div class="layout">
+    <aside class="sidebar">
+      <img src="{{ url_for('static', filename='Lopezn.png') }}" alt="Lopezon Logo" class="sidebar-logo">
+      {% include "sidebar.html" %}
+    </aside>
+    <div class="container">
     <h2>お気に入りリスト</h2>
 
     <div class="cards">
@@ -148,6 +211,11 @@
       {% endif %}
     </div>
   </div>
+
+  </div>
+    
+
+  
 
   <div class="footer">
     <a href="/index">トップページに戻る</a> ｜ 
