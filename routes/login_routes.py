@@ -6,7 +6,7 @@ from firebase_admin import firestore
 import os, json
 
 # Flask アプリ作成
-login_bp = Blueprint("login", __name__, url_prefix="/login")
+login_bp = Blueprint("login", __name__,url_prefix="/login")
 
 with open("firebase_config.json", "r", encoding="utf-8") as f:
     config = json.load(f) 
@@ -27,26 +27,17 @@ def login_page():
             user = auth.sign_in_with_email_and_password(email, password)
             session["user"] = user["idToken"]
             flash("ログイン成功しました！", "success")
-            return redirect(url_for("index"))
+            return redirect(url_for("search.search_page"))
         except Exception as e:
             print("Login error:", e)
             flash("IDかパスワードが異なっています。", "danger")
-            return redirect(url_for("login_page"))
+            return redirect(url_for("login.login_page"))
 
      return render_template("login.html")
-
-
-@login_bp.route("/index")
-def index():
-    if "user" not in session:
-        flash("ログインしてください", "warning")
-        return redirect(url_for("login_page"))
-    return render_template("index.html")
 
 
 @login_bp.route("/logout")
 def logout():
     session.pop("user", None)
     flash("ログアウトしました", "info")
-    return redirect(url_for("login_page"))
-
+    return redirect(url_for("login.login_page"))
