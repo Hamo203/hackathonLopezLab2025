@@ -3,32 +3,122 @@
 <head>
   <meta charset="UTF-8">
   <title>研究支援チャット</title>
+  <style>
+    /* masaaki.html からスタイルをコピー */
+    body { font-family: sans-serif; margin:20px; }
+    h1, h2 { color: #333; }
+    textarea { width: 100%; max-width: 600px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
+    button { padding: 10px 16px; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 1em; }
+    button:hover { background-color: #0056b3; }
+    #loading { display: none; margin-top: 10px; }
+
+    /* カードコンテナを縦に並べる */
+    .cards { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+    /* 横長カード */
+    .card { 
+      display: flex; 
+      justify-content: space-between;
+      background:#fff; 
+      border-radius:12px; 
+      padding:16px; 
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* 左側のテキスト */
+    .card .info { flex: 1; }
+    .card .info h2 { 
+      margin:0 0 8px; 
+      font-size:1.3em; 
+      font-weight:700; 
+      color:#333;
+    }
+    .card .place { font-size:1em; font-weight:600; color:#007bff; margin-bottom:8px; }
+    .card .use { font-size:0.90em; color:#555; margin-bottom:8px; }
+    .card .article { font-size:1em; font-style:italic; color:#444; margin-bottom:6px; }
+
+    /* 右側リンク */
+    .card .link { margin-left: 20px; white-space: nowrap; display:flex; align-items:center; }
+    .card .link a { text-decoration:none; color:#007bff; }
+  </style>
 </head>
 <body>
-  <h1>研究支援チャット (検索ページ)</h1>
+  <h1>研究支援チャット 🔬</h1>
+  <p>やりたいことを入力すると、研究室にある最適なデバイスを提案します。</p>
 
-  <textarea id="userInput" rows="4" cols="50" placeholder="質問を入力してください"></textarea><br>
+  <textarea id="userInput" rows="4" cols="50" placeholder="例:「マイクロ流路内の微小な粒子の動きを高速で撮影したい」"></textarea><br><br>
   <button onclick="sendMessage()">送信</button>
+  <div id="loading">検索中...</div>
 
-  <h2>回答:</h2>
-  <div id="response"></div>
+  <h2>提案されたデバイス:</h2>
+  <div id="cardsContainer" class="cards"></div>
 
   <script>
+    // masaaki.html からカード生成関数をコピー
+    function createCard(d) {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <div class="info">
+          <h2>${d.name || ''}</h2>
+          <div class="place"><b>配置場所：</b>${d.place || '情報なし'}</div>
+          <div class="use"><b>説明：</b>${d.use || '情報なし'}</div>
+          <div class="article"><b>使用された論文：</b>${d.article || '情報なし'}</div>
+        </div>
+        <div class="link">
+          ${d.articleUrl ? `<a href="${d.articleUrl}" target="_blank">記事リンク</a>` : ''}
+          <div style="font-size:0.75em;color:#aaa;margin-left:10px;">ID: ${d.id || ''}</div>
+        </div>
+      `;
+      return div;
+    }
+
     async function sendMessage() {
       const userMessage = document.getElementById("userInput").value;
+      const container = document.getElementById('cardsContainer');
+      const loadingIndicator = document.getElementById('loading');
+      
+      if (!userMessage.trim()) {
+        alert('質問を入力してください。');
+        return;
+      }
 
-      // ★ デバッグ用コメント出力
-      console.log("送信ボタンが押されました");
-      console.log("入力内容:", userMessage);
+      // 以前の結果をクリアし、ローディング表示
+      container.innerHTML = '';
+      loadingIndicator.style.display = 'block';
 
-      const res = await fetch("/search/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage })
-      });
+      try {
+        const res = await fetch("/search/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMessage })
+        });
 
-      const data = await res.json();
-      document.getElementById("response").innerText = data.reply;
+        if (!res.ok) {
+          throw new Error(`サーバーエラー: ${res.status}`);
+        }
+
+        // レスポンスはデバイス情報の配列
+        const devices = await res.json();
+        
+        if (devices.error) {
+            container.innerText = `エラーが発生しました: ${devices.error}`;
+        } else if (devices.length === 0) {
+            container.innerText = '関連するデバイスが見つかりませんでした。';
+        } else {
+            // 受け取ったデバイスデータでカードを生成
+            devices.forEach(device => {
+              const cardElement = createCard(device);
+              container.appendChild(cardElement);
+            });
+        }
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        container.innerText = 'データの取得中にエラーが発生しました。';
+      } finally {
+        // ローディング非表示
+        loadingIndicator.style.display = 'none';
+      }
     }
   </script>
 </body>
