@@ -26,7 +26,6 @@ def login_page():
         try:
             user = auth.sign_in_with_email_and_password(email, password)
             session["user"] = user["idToken"]
-            flash("ログイン成功しました！", "success")
             return redirect(url_for("search.search_page"))
         except Exception as e:
             print("Login error:", e)
