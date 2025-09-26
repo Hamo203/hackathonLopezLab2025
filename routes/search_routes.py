@@ -47,7 +47,7 @@ def chat():
     ##################################################################
 
     #追加メッセージ
-    additional_prompt = "この質問に対して、研究室にある以下のデバイスの中から最適なものを提案してください:\n"
+    additional_prompt = "この質問に対して、研究室にある以下のデバイスの中から最適なものをデバイス名を配列の形式で３つ提案してください:\n"
     additional_prompt += ", ".join(device_names)
 
     full_message = user_message + "\n" + additional_prompt
@@ -86,5 +86,6 @@ def chat():
     except KeyError:
         return jsonify({"error": "Invalid response from OpenAI API"}), 500
     #################################################################################
+
 
     return jsonify({"reply": reply})
