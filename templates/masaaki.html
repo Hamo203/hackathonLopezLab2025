@@ -1,72 +1,22 @@
 <!doctype html>
-<html>
+<html lang="ja">
 <head>
 <meta charset="utf-8">
 <title>検索結果</title>
-<style>
-body { font-family: sans-serif; margin:20px; }
-.genre-filters { margin-bottom: 20px; }
-.genre-filters label { margin-right: 12px; cursor: pointer; }
-
-/* カードコンテナを縦に並べる */
-.cards { display: flex; flex-direction: column; gap: 16px; max-height: 80vh; overflow-y: auto; }
-
-/* 横長カード */
-.card { 
-  display: flex; 
-  justify-content: space-between;
-  background:#fff; 
-  border-radius:12px; 
-  padding:16px; 
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* 左側のテキスト */
-.card .info { flex: 1; }
-
-.card .info h2 { 
-  margin:0 0 8px; 
-  font-size:1.3em; 
-  font-weight:700; 
-  color:#333;
-}
-
-/* place を目立たせる */
-.card .place { 
-  font-size:1em; 
-  font-weight:600; 
-  color:#007bff;   /* 青系で視認性アップ */
-  margin-bottom:8px; 
-}
-
-/* use は少し落ち着いた色で表示 */
-.card .use { 
-  font-size:0.90em; 
-  color:#555; 
-  margin-bottom:8px; 
-}
-
-/* article は斜体＋少し大きめで強調 */
-.card .article { 
-  font-size:1em; 
-  font-style:italic; 
-  color:#444; 
-  margin-bottom:6px; 
-}
-
-/* 右側リンク */
-.card .link { margin-left: 20px; white-space: nowrap; display:flex; align-items:center; }
-.card .link a { text-decoration:none; color:#007bff; }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='masaaki_style.css') }}">
 </head>
 <body>
-<h1>検索結果</h1>
+  <div class="navbar">
+    <h1>検索結果</h1>
+  </div>
 
-<div class="genre-filters" id="genreFilters">
-  <label><input type="checkbox" value="all" checked> すべて</label>
-</div>
+  <div class="container">
+    <div class="genre-filters" id="genreFilters">
+      <label><input type="checkbox" value="all" checked> <span>すべて</span></label>
+    </div>
 
-<div id="cardsContainer" class="cards"></div>
+    <div id="cardsContainer" class="cards"></div>
+  </div>
 
 <script>
 let allData = {};
@@ -79,7 +29,7 @@ async function loadDevices() {
 
   Object.keys(allData).forEach(genre => {
     const label = document.createElement('label');
-    label.innerHTML = `<input type="checkbox" value="${genre}"> ${genre}`;
+    label.innerHTML = `<input type="checkbox" value="${genre}"> <span>${genre}</span>`;
     filtersEl.appendChild(label);
   });
 
@@ -128,7 +78,6 @@ function createCard(d) {
   return div;
 }
 
-// チェックボックス変更時に表示更新
 document.getElementById('genreFilters').addEventListener('change', () => {
   const allCheckbox = document.querySelector('#genreFilters input[value="all"]');
   const otherCheckboxes = Array.from(document.querySelectorAll('#genreFilters input:not([value="all"])'));
