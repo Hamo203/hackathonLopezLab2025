@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>マイページ - お気に入り</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background: #232f3e;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    .navbar h1 {
+      margin: 0;
+      font-size: 1.4em;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #111;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.01);
+    }
+
+    .card .info {
+      flex: 1;
+    }
+    .card .info h3 {
+      margin: 0 0 8px;
+      font-size: 1.2em;
+      font-weight: 700;
+      color: #111;
+    }
+    .card .info p {
+      margin: 4px 0;
+      color: #555;
+      font-size: 0.95em;
+    }
+
+    .card .actions {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .card .actions a {
+      text-decoration: none;
+      color: #007185;
+      font-size: 0.9em;
+    }
+    .card .actions a:hover {
+      color: #c7511f;
+    }
+    .card .actions button {
+      background: #ffa41c;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.9em;
+      font-weight: bold;
+      cursor: pointer;
+      color: #111;
+    }
+    .card .actions button:hover {
+      background: #f08804;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      font-size: 1em;
+      color: #555;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 13px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>マイページ</h1>
+  </div>
+
+  <div class="container">
+    <h2>お気に入りリスト</h2>
+
+    <div class="cards">
+      {% if favorites %}
+        {% for device in favorites %}
+        <div class="card">
+          <div class="info">
+            <h3>{{ device.name }}</h3>
+            <p><b>配置場所：</b>{{ device.place }}</p>
+            <p><b>説明：</b>{{ device.use }}</p>
+            <p><b>使用された論文：</b>{{ device.article }}</p>
+          </div>
+          <div class="actions">
+            {% if device.articleUrl %}
+              <a href="{{ device.articleUrl }}" target="_blank">記事リンク</a>
+            {% endif %}
+            <form method="POST" action="/favorites/remove/{{ device.id }}">
+              <button type="submit">お気に入り解除</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty">まだお気に入りはありません。</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="/index">トップページに戻る</a> ｜ 
+    <a href="/logout">ログアウト</a>
+  </div>
+</body>
+</html>
