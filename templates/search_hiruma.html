@@ -186,26 +186,40 @@
     color: rgba(255, 255, 255, 0.7);
   }
 
-  /* ▼▼▼【追加】サイドバーのロゴのスタイル ▼▼▼ */
-  .sidebar-logo {
-    display: block;      /* 中央揃えのためにblock要素にする */
-    width: 80%;          /* サイドバーの幅に対して80%のサイズ */
-    max-width: 150px;    /* 大きくなりすぎないように最大幅を指定 */
-    margin: 20px auto;   /* 上下に20px、左右に自動でマージンをとり中央揃え */
-    padding-bottom: 20px; /* ロゴの下に余白を追加 */
-    border-bottom: 1px solid #eee; /* 区切り線 */
+  /* ▼▼▼【変更】ヘッダーのスタイルを更新 ▼▼▼ */
+  .navbar {
+    display: flex;
+    align-items: center;
+    background: #232f3e; /* 指定された背景色 */
+    color: white;      /* 指定された文字色 */
+    padding: 15px;     /* 指定されたパディング */
   }
-  /* ▲▲▲【追加】サイドバーのロゴのスタイル ▲▲▲ */
+
+  .navbar h1 {
+    flex-grow: 1; /* タイトルが残りのスペースをすべて使うように設定 */
+    text-align: center; /* 文字を中央揃え */
+    margin: 0; /* h1のデフォルトマージンをリセット */
+    /* ロゴ（高さ40px+右マージン15px=55px）の幅を考慮して、タイトルの右にパディングを追加し中央を調整 */
+    padding-right: 55px; 
+  }
+
+  /* ロゴのスタイル */
+  .navbar-logo {
+    height: 80px;
+    width: auto;
+    margin-right: 15px;
+  }
+  /* ▲▲▲【変更】ここまで ▲▲▲ */
 
 </style>
 </head>
 <body>
   <header class="navbar">
+    <img src="{{ url_for('static', filename='Lopezon2.jpg') }}" alt="Lopezon Logo" class="navbar-logo">
     <h1>研究室 備品管理システム</h1>
   </header>
   <div class="layout">
     <aside class="sidebar">
-      <img src="{{ url_for('static', filename='Lopezn.png') }}" alt="Lopezon Logo" class="sidebar-logo">
       {% include "sidebar.html" %}
     </aside>
     <div class ="container">
