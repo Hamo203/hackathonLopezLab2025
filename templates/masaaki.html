@@ -83,6 +83,7 @@ function getFavorites() {
   return favorites ? JSON.parse(favorites) : [];
 }
 
+
 /**
  * お気に入りIDの配列をlocalStorageに保存する
  * @param {string[]} favoritesArray お気に入りIDの配列
@@ -90,6 +91,18 @@ function getFavorites() {
 function saveFavorites(favoritesArray) {
   localStorage.setItem('deviceFavorites', JSON.stringify(favoritesArray));
 }
+
+async function saveFavoriteToServer(deviceId, action) {
+  const res = await fetch("/masaaki/api/favorite", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ deviceId, action }) // action: "add" or "remove"
+  });
+  const data = await res.json();
+  console.log("Server response:", data);
+}
+
+
 // ▲▲▲【追加】お気に入り管理関数 ▲▲▲
 
 async function loadDevices() {
@@ -192,11 +205,13 @@ document.getElementById('cardsContainer').addEventListener('click', function(eve
       favorites = favorites.filter(id => id !== deviceId);
       targetButton.classList.remove('favorited');
       targetButton.innerHTML = '♡ お気に入り登録';
+      saveFavoriteToServer(deviceId, "remove");
     } else {
       // お気に入りにない場合：リストに追加
       favorites.push(deviceId);
       targetButton.classList.add('favorited');
       targetButton.innerHTML = '♥ お気に入り解除';
+      saveFavoriteToServer(deviceId, "add");
     }
     
     // 変更をlocalStorageに保存
