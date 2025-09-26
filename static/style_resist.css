@@ -5,6 +5,12 @@ body {
   margin: 0;
   padding: 0;
 }
+.layout {
+  display: flex;     /* 横並びにする */
+  min-height: 100vh; /* 画面の高さに合わせる */
+
+}
+
 
 /* ヘッダー */
 .navbar {
@@ -123,4 +129,49 @@ button {
   background: #ffeaea;
   border: 1px solid #e74c3c;
   color: #a82323;
+}
+
+
+/* サイドバー */
+.sidebar {
+  width: 140px;/*横幅 */
+  height: 100vh;
+  background-color: #eee; /* 背景色 */
+  color: #232f3e;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 2rem ;
+}
+
+.sidebar-nav ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav ul li a {
+  color: #232f3e;
+  text-decoration: none;
+  font-size: 1rem;
+  display: block;
+  padding: 0.5rem 0;
+  transition: background 0.3s;
+}
+
+.sidebar-nav ul li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding-left: 0.5rem;
+}
+
+
+.copy {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
 }
