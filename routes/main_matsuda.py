@@ -24,6 +24,12 @@ def add_page():
 # 備品追加
 @matsuda_bp.route("/add_asset", methods=["POST"])
 def add_asset():
+    ##################################################################
+    #dbにアクセス
+    db = current_app.config["FIRESTORE_DB"]
+    if db is None:
+        return jsonify({"error": "Database not configured"}), 500
+    ##################################################################
     data = request.json
     required = ["name", "place", "use"]
     for key in required:
