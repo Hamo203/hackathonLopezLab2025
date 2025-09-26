@@ -6,54 +6,62 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style_resist.css') }}">
 </head>
 <body>
+  
   <header class="navbar">
     <h1>研究室 備品管理システム</h1>
   </header>
+  <div class="layout">  
+    <aside class="sidebar">
+      {% include "sidebar.html" %}
+    </aside>
 
-  <main class="container">
-    <!-- 追加フォーム -->
-    <div class="card">
-      <h2>備品を追加</h2>
-      <form onsubmit="event.preventDefault(); addAsset();">
-        <label>デバイス名 *</label>
-        <input id="name" required>
+    <main class="container">
+      <!-- 追加フォーム -->
+      <div class="card">
+        <h2>備品を追加</h2>
+        <form onsubmit="event.preventDefault(); addAsset();">
+          <label>デバイス名 *</label>
+          <input id="name" required>
 
-        <label>場所 *</label>
-        <input id="place" required>
+          <label>場所 *</label>
+          <input id="place" required>
 
-        <label>使い方 *</label>
-        <textarea id="use" required></textarea>
+          <label>使い方 *</label>
+          <textarea id="use" required></textarea>
 
-        <label>論文タイトル</label>
-        <input id="article">
+          <label>論文タイトル</label>
+          <input id="article">
 
-        <label>論文URL</label>
-        <input id="articleUrl" type="url">
+          <label>論文URL</label>
+          <input id="articleUrl" type="url">
 
-        <label>ジャンル *</label>
-        <div class="genre-options">
-          <label><input type="checkbox" name="genre" value="digital well-being"><span>Digital Well-being</span></label>
-          <label><input type="checkbox" name="genre" value="XR"><span>XR</span></label>
-          <label><input type="checkbox" name="genre" value="daily well-being"><span>Daily Well-being</span></label>
-          <label><input type="checkbox" name="genre" value="physical activity"><span>Physical Activity</span></label>
-        </div>
+          <label>ジャンル *</label>
+          <div class="genre-options">
+            <label><input type="checkbox" name="genre" value="digital well-being"><span>Digital Well-being</span></label>
+            <label><input type="checkbox" name="genre" value="XR"><span>XR</span></label>
+            <label><input type="checkbox" name="genre" value="daily well-being"><span>Daily Well-being</span></label>
+            <label><input type="checkbox" name="genre" value="physical activity"><span>Physical Activity</span></label>
+          </div>
 
-        <button type="submit" class="btn-primary">追加</button>
-      </form>
-      <div id="addMsg"></div>
-    </div>
+          <button type="submit" class="btn-primary">追加</button>
+        </form>
+        <div id="addMsg"></div>
+      </div>
 
-    <!-- 削除フォーム -->
-    <div class="card">
-      <h2>備品を削除</h2>
-      <form onsubmit="event.preventDefault(); deleteAsset();">
-        <label>デバイス名 *</label>
-        <input id="delName" required>
-        <button type="submit" class="btn-danger">削除</button>
-      </form>
-      <div id="delMsg"></div>
-    </div>
-  </main>
+      <!-- 削除フォーム -->
+      <div class="card">
+        <h2>備品を削除</h2>
+        <form onsubmit="event.preventDefault(); deleteAsset();">
+          <label>デバイス名 *</label>
+          <input id="delName" required>
+          <button type="submit" class="btn-danger">削除</button>
+        </form>
+        <div id="delMsg"></div>
+      </div>
+    </main>
+
+  </div>
+  
 
 <script>
 const API_BASE = "http://127.0.0.1:5000";
