@@ -2,20 +2,25 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>検索結果</title>
+<title>備品一覧</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='masaaki_style.css') }}">
 </head>
 <body>
   <div class="navbar">
-    <h1>検索結果</h1>
+    <h1>備品一覧</h1>
   </div>
+  <div class="layout">
+    <aside class="sidebar">
+      {% include "sidebar.html" %}
+    </aside>
+    
+    <div class="container">
+      <div class="genre-filters" id="genreFilters">
+        <label><input type="checkbox" value="all" checked> <span>すべて</span></label>
+      </div>
 
-  <div class="container">
-    <div class="genre-filters" id="genreFilters">
-      <label><input type="checkbox" value="all" checked> <span>すべて</span></label>
+      <div id="cardsContainer" class="cards"></div>
     </div>
-
-    <div id="cardsContainer" class="cards"></div>
   </div>
 
 <script>
